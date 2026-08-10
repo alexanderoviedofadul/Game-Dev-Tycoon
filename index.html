@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Dev Tycoon — Guía Estratégica Definitiva y Dashboard Interactivo 🎮</title>
+  <meta name="description" content="La guía interactiva más completa y detallada para dominar Game Dev Tycoon. Sliders por género, matriz de temas, consolas, modo antipiratería y laboratorio I+D.">
+
+  <!-- Google Fonts: Press Start 2P (Pixel) + Inter + Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo-brand">
+        <img src="assets/gamepad_tycoon.png" alt="Game Dev Tycoon Logo">
+        <div class="brand-text">
+          <span class="brand-title">GAME DEV TYCOON</span>
+          <span class="brand-subtitle">Guía Estratégica Definitiva 🚀</span>
+        </div>
+      </a>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs" role="tablist">
+        <button id="tab-roadmap" class="tab-btn active" onclick="switchTab('roadmap')">
+          <i class="fa-solid fa-map-location-dot"></i> Progresión
+        </button>
+        <button id="tab-sliders" class="tab-btn" onclick="switchTab('sliders')">
+          <i class="fa-solid fa-sliders"></i> Sliders
+        </button>
+        <button id="tab-combos" class="tab-btn" onclick="switchTab('combos')">
+          <i class="fa-solid fa-fire"></i> Sinergias
+        </button>
+        <button id="tab-consoles" class="tab-btn" onclick="switchTab('consoles')">
+          <i class="fa-solid fa-gamepad"></i> Consolas
+        </button>
+        <button id="tab-lab" class="tab-btn" onclick="switchTab('lab')">
+          <i class="fa-solid fa-flask"></i> I+D & AAA
+        </button>
+        <button id="tab-piracy" class="tab-btn" onclick="switchTab('piracy')">
+          <i class="fa-solid fa-skull-crossbones"></i> Pirate Mode
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main>
+
+    <!-- HERO BANNER -->
+    <section class="hero" aria-label="Hero banner">
+      <img src="assets/hero_banner.png" alt="Studio Banner" class="hero-banner-img">
+      <div class="hero-overlay">
+        <span class="hero-badge"><i class="fa-solid fa-trophy"></i> Guía Maestra para Todos los Niveles</span>
+        <h1 class="hero-title">Domina la Industria de los Videojuegos en Game Dev Tycoon</h1>
+        <p class="hero-desc">Desde tus primeros pasos programando en el garaje hasta la creación de tu propio imperio con consolas personalizadas, juegos AAA y servidores MMO. Domina la matriz de combinaciones, la física de sliders y la estrategia de laboratorio.</p>
+      </div>
+    </section>
+
+    <!-- TAB 1: ROADMAP & PROGRESION DE OFICINAS -->
+    <section id="sec-roadmap" class="tab-content active">
+      <h2 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:1rem; color:var(--clr-cyan)">
+        <i class="fa-solid fa-route"></i> Hoja de Ruta: De Garaje a Gigante del Entretenimiento
+      </h2>
+
+      <div class="grid-2">
+        <div class="roadmap-step">
+          <span class="step-badge">ETAPA 1</span>
+          <h3 class="step-title">📍 El Garaje Solo Dev (Años 1 – 3)</h3>
+          <p style="color:var(--clr-muted); font-size:0.9rem;">Empiezas solo con presupuesto ajustado. El objetivo principal es sobrevivir, ganar Puntos de Investigación (RP) y acumular capital inicial.</p>
+          <ul class="step-checklist">
+            <li>Lanza juegos de tamaño <strong>Pequeño (Small)</strong> en <strong>PC Game</strong> o <strong>Govodore G64</strong>.</li>
+            <li>Mejor combo inicial: <strong>Acción + Ninja</strong> o <strong>Casual + Carreras</strong> en PC.</li>
+            <li>Realiza <strong>Informes de Juego (Game Reports)</strong> tras cada lanzamiento para ganar RP adicionales.</li>
+            <li>Investiga tu primer motor casero <strong>2D Graphics v2</strong> cuando superes los $100K.</li>
+            <li>Acepta contratos sencillos de desarrollo cuando el dinero baje de $30K.</li>
+          </ul>
+        </div>
+
+        <div class="roadmap-step">
+          <span class="step-badge">ETAPA 2</span>
+          <h3 class="step-title">📍 Oficina Pequeña & Contrataciones (Años 3 – 8)</h3>
+          <p style="color:var(--clr-muted); font-size:0.9rem;">Alcanzas $1M en caja y te mudas. Puedes contratar hasta 4 empleados e interactuar con distribuidores para juegos medianos.</p>
+          <ul class="step-checklist">
+            <li>Contrata empleados balanceados en <strong>Diseño</strong> y <strong>Tecnología</strong>.</li>
+            <li>Desbloquea juegos de tamaño <strong>Mediano (Medium)</strong> e investiga <strong>Público Objetivo (Target Audience)</strong>.</li>
+            <li>Capacita regularmente a tu personal con cursos de formación antes de proyectos grandes.</li>
+            <li>Participa en la convención <strong>G3</strong> reservando un estand medio/grande.</li>
+            <li>Invierte en motores gráficos <strong>3D Graphics v1 & v2</strong>.</li>
+          </ul>
+        </div>
+
+        <div class="roadmap-step">
+          <span class="step-badge">ETAPA 3</span>
+          <h3 class="step-title">📍 Estudio Grande & Líderes de Departamento (Años 8 – 15)</h3>
+          <p style="color:var(--clr-muted); font-size:0.9rem;">Con $16M en caja te trasladas al edificio corporativo. Puedes tener hasta 6 empleados y lanzar juegos de tamaño Grande y secuelas millonarias.</p>
+          <ul class="step-checklist">
+            <li>Nombra especialistas como <strong>Líderes de Departamento</strong> (Diseño, IA, Sonido, Gráficos).</li>
+            <li>Lanza campañas publicitarias intensivas en TV y Prensa previo al lanzamiento.</li>
+            <li>Lanza juegos <strong>Grandes (Large)</strong> y crea secuelas con intervalos de al menos 40 semanas.</li>
+            <li>Evita secuelas con el mismo motor viejo: actualiza siempre la tecnología del motor.</li>
+          </ul>
+        </div>
+
+        <div class="roadmap-step">
+          <span class="step-badge">ETAPA 4</span>
+          <h3 class="step-title">📍 Laboratorio de I+D & Consola Propia (Años 15+)</h3>
+          <p style="color:var(--clr-muted); font-size:0.9rem;">El nivel máximo. Funda el Laboratorio de Investigación y Desarrollo (R&D) y el Laboratorio de Hardware.</p>
+          <ul class="step-checklist">
+            <li>Desbloquea juegos de tamaño <strong>AAA</strong> y títulos masivos <strong>MMO</strong>.</li>
+            <li>Contrata a un <strong>Ingeniero de Hardware</strong> para diseñar tu propia consola.</li>
+            <li>Construye granjas de servidores para dar soporte y expansiones a tu MMO.</li>
+            <li>Domina la cuota de mercado global y maximiza los ingresos por regalías.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: CALCULADORA INTERACTIVA DE SLIDERS -->
+    <section id="sec-sliders" class="tab-content">
+      <h2 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:1rem; color:var(--clr-cyan)">
+        <i class="fa-solid fa-sliders"></i> Calculadora Interactiva de Sliders por Género
+      </h2>
+
+      <div class="calculator-box">
+        <div class="control-group">
+          <div class="select-wrapper">
+            <label for="calc-genre-select"><i class="fa-solid fa-gamepad"></i> Selecciona el Género del Juego:</label>
+            <select id="calc-genre-select" class="form-select" onchange="updateSlidersCalculator()">
+              <option value="action">Acción / Action</option>
+              <option value="adventure">Aventura / Adventure</option>
+              <option value="casual">Casual</option>
+              <option value="rpg">RPG</option>
+              <option value="simulation">Simulación / Simulation</option>
+              <option value="strategy">Estrategia / Strategy</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:flex-end;">
+            <span id="calc-ratio-badge" class="badge badge-purple" style="font-size:0.9rem; padding:0.6rem 1rem;">
+              ⚖️ Balance: Alto Tech / Medio Diseño
+            </span>
+          </div>
+        </div>
+
+        <h3 id="calc-genre-label" style="color:#fff; font-size:1.1rem; margin-bottom:1rem;">Acción / Action</h3>
+
+        <!-- Phase 1 -->
+        <div style="margin-bottom:1.5rem;">
+          <h4 style="font-size:0.9rem; color:var(--clr-cyan); margin-bottom:0.5rem;"><i class="fa-solid fa-microchip"></i> Etapa 1: Motor, Jugabilidad y Guión</h4>
+          <div class="slider-row">
+            <div class="slider-row-header">
+              <span id="p1-s1-title">Engine / Motor</span>
+              <span id="p1-s1-val" class="slider-value-badge">100%</span>
+            </div>
+            <div class="slider-track-visual"><div id="p1-s1-fill" class="slider-fill-visual"></div></div>
+          </div>
+          <div class="slider-row">
+            <div class="slider-row-header">
+              <span id="p1-s2-title">Gameplay / Jugabilidad</span>
+              <span id="p1-s2-val" class="slider-value-badge">80%</span>
+            </div>
+            <div class="slider-track-visual"><div id="p1-s2-fill" class="slider-fill-visual"></div></div>
+          </div>
+          <div class="slider-row">
+            <div class="slider-row-header">
+              <span id="p1-s3-title">Story / Guión</span>
+              <span id="p1-s3-val" class="slider-value-badge">20%</span>
+            </div>
+            <div class="slider-track-visual"><div id="p1-s3-fill" class="slider-fill-visual"></div></div>
+          </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div style="margin-bottom:1.5rem;">
+          <h4 style="font-size:0.9rem; color:var(--clr-purple); margin-bottom:0.5rem;"><i class="fa-solid fa-brain"></i> Etapa 2: IA, Diseño de Niveles y Diálogos</h4>
+          <div class="slider-row">
+            <div class="slider-row-header">
+              <span id="p2-s1-title">AI / Inteligencia Artificial</span>
+              <span id="p2-s1-val" class="slider-value-badge">100%</span>
+            </div>
+            <div class="slider-track-visual"><div id="p2-s1-fill" class="slider-fill-visual"></div></div>
+          </div>
+          <div class="slider-row">
+            <div class="slider-row-header">
+              <span id="p2-s2-title">Level Design / Diseño Niveles</span>
+              <span id="p2-s2-val" class="slider-value-badge">80%</span>
+            </div>
+            <div class="slider-track-visual"><div id="p2-s2-fill" class="slider-fill-visual"></div></div>
+          </div>
+          <div class="slider-row">
+            <div class="slider-row-header">
+              <span id="p2-s3-title">Dialogues / Diálogos</span>
+              <span id="p2-s3-val" class="slider-value-badge">20%</span>
+            </div>
+            <div class="slider-track-visual"><div id="p2-s3-fill" class="slider-fill-visual"></div></div>
+          </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div>
+          <h4 style="font-size:0.9rem; color:var(--clr-gold); margin-bottom:0.5rem;"><i class="fa-solid fa-palette"></i> Etapa 3: Gráficos, Sonido y Mundo</h4>
+          <div class="slider-row">
+            <div class="slider-row-header">
+              <span id="p3-s1-title">Graphics / Gráficos</span>
+              <span id="p3-s1-val" class="slider-value-badge">100%</span>
+            </div>
+            <div class="slider-track-visual"><div id="p3-s1-fill" class="slider-fill-visual"></div></div>
+          </div>
+          <div class="slider-row">
+            <div class="slider-row-header">
+              <span id="p3-s2-title">Sound / Sonido</span>
+              <span id="p3-s2-val" class="slider-value-badge">80%</span>
+            </div>
+            <div class="slider-track-visual"><div id="p3-s2-fill" class="slider-fill-visual"></div></div>
+          </div>
+          <div class="slider-row">
+            <div class="slider-row-header">
+              <span id="p3-s3-title">World Design / Mundo</span>
+              <span id="p3-s3-val" class="slider-value-badge">20%</span>
+            </div>
+            <div class="slider-track-visual"><div id="p3-s3-fill" class="slider-fill-visual"></div></div>
+          </div>
+        </div>
+
+        <div style="margin-top:1.5rem; background:var(--clr-surface2); padding:1rem; border-radius:var(--radius-md); border:1px solid var(--clr-border);">
+          <h5 style="color:var(--clr-gold); margin-bottom:0.5rem;"><i class="fa-solid fa-lightbulb"></i> Consejos Tácticos de Desarrollo</h5>
+          <ul id="calc-tips-list" style="list-style:none;"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: MATRIZ DE SINERGIAS (COMBOS) -->
+    <section id="sec-combos" class="tab-content">
+      <h2 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:1rem; color:var(--clr-cyan)">
+        <i class="fa-solid fa-fire"></i> Matriz de Sinergias: Temas, Géneros y Público Objetivo
+      </h2>
+
+      <div class="filter-bar">
+        <input type="text" id="combo-search" class="form-input" style="flex:2; min-width:220px;" placeholder="🔍 Buscar por Tema o descripción..." oninput="filterCombos()">
+        <select id="combo-genre-filter" class="form-select" style="flex:1; min-width:160px;" onchange="filterCombos()">
+          <option value="ALL">Todos los Géneros</option>
+          <option value="Acción">Acción</option>
+          <option value="Aventura">Aventura</option>
+          <option value="Casual">Casual</option>
+          <option value="RPG">RPG</option>
+          <option value="Simulación">Simulación</option>
+          <option value="Estrategia">Estrategia</option>
+        </select>
+        <select id="combo-audience-filter" class="form-select" style="flex:1; min-width:160px;" onchange="filterCombos()">
+          <option value="ALL">Todos los Públicos</option>
+          <option value="Joven">Joven (Young)</option>
+          <option value="Todos">Todos (Everyone)</option>
+          <option value="Maduro">Maduro (Mature)</option>
+        </select>
+      </div>
+
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Tema (Topic)</th>
+              <th>Género</th>
+              <th>Calificación</th>
+              <th>Público Ideal</th>
+              <th>Recomendaciones Tácticas</th>
+            </tr>
+          </thead>
+          <tbody id="combo-table-body">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 4: CONSOLAS & CRONOLOGIA -->
+    <section id="sec-consoles" class="tab-content">
+      <h2 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:1rem; color:var(--clr-cyan)">
+        <i class="fa-solid fa-gamepad"></i> Cronología de Consolas y Cuotas de Mercado
+      </h2>
+
+      <div style="margin-bottom:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <button class="tab-btn" onclick="renderConsoles('ALL')">Todas las Plataformas</button>
+        <button class="tab-btn" onclick="renderConsoles('ETERNAL')">∞ Permanentes (PC/Mobile)</button>
+        <button class="tab-btn" onclick="renderConsoles('CUSTOM')">⭐ Consola Propia</button>
+      </div>
+
+      <div id="consoles-grid" class="grid-3">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- TAB 5: I+D, MMOS & JUEGOS AAA -->
+    <section id="sec-lab" class="tab-content">
+      <h2 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:1rem; color:var(--clr-cyan)">
+        <i class="fa-solid fa-flask"></i> Laboratorio I+D, Formación y Títulos AAA / MMO
+      </h2>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header">
+            <div class="icon-box"><i class="fa-solid fa-flask-vial"></i></div>
+            <h3 class="card-title">Proyectos de I+D (R&D Lab)</h3>
+          </div>
+          <p style="color:var(--clr-muted); font-size:0.9rem; margin-bottom:0.75rem;">Requiere la mudanza al estudio grande y una inversión de $5M. Permite investigar las tecnologías más avanzadas del juego:</p>
+          <ul class="step-checklist">
+            <li><strong>Motor Casero v5 y v6:</strong> Gráficos 3D de nivel fotorrealista.</li>
+            <li><strong>MMOs (Juegos Masivos):</strong> Ingresos recurrentes por suscripción digital.</li>
+            <li><strong>Servidores de Red:</strong> Mantenimiento mensual necesario para evitar fugas de usuarios.</li>
+            <li><strong>Motor de Física Propietario:</strong> Aumenta drásticamente las valoraciones de Acción y Simulación.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="icon-box"><i class="fa-solid fa-crown"></i></div>
+            <h3 class="card-title">Secretos de los Juegos AAA y MMOs</h3>
+          </div>
+          <p style="color:var(--clr-muted); font-size:0.9rem; margin-bottom:0.75rem;">Desarrollar un título AAA o un MMO requiere planificación extrema:</p>
+          <ul class="step-checklist">
+            <li>Asigna 3 <strong>Líderes Especialistas</strong> para cada fase de desarrollo.</li>
+            <li>Un MMO no termina al lanzarlo: lanza <strong>Expansiones (Expansion Packs)</strong> cada 30-50 semanas.</li>
+            <li>Si el número de servidores es insuficiente, la satisfacción del cliente caerá a cero.</li>
+            <li>Usa 3D Graphics v5 o v6 obligatoriamente para calificar en el GOTY AAA.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 6: PIRATE MODE & TRUCOS -->
+    <section id="sec-piracy" class="tab-content">
+      <h2 style="font-family:var(--font-heading); font-size:1.5rem; margin-bottom:1rem; color:var(--clr-rose)">
+        <i class="fa-solid fa-skull-crossbones"></i> Modo Antipiratería (Pirate Mode) & Secretos
+      </h2>
+
+      <div class="grid-2">
+        <div class="card" style="border-color:var(--clr-rose);">
+          <div class="card-header">
+            <div class="icon-box" style="color:var(--clr-rose);"><i class="fa-solid fa-user-ninja"></i></div>
+            <h3 class="card-title" style="color:var(--clr-rose);">Sobreviviendo al Modo Antipiratería</h3>
+          </div>
+          <p style="color:var(--clr-muted); font-size:0.9rem; margin-bottom:0.75rem;">En el *Pirate Mode*, hasta el 95% de tus jugadores piraterán tu juego si no implementas DRM o medidas de protección temprana:</p>
+          <ul class="step-checklist">
+            <li>Investiga <strong>Protección DRM</strong> tan pronto como ingreses a la segunda oficina.</li>
+            <li>No gastes en campañas masivas si no tienes DRM: las ventas no cubrirán la inversión.</li>
+            <li>Enfócate en juegos con fuerte componente <strong>Multijugador Online</strong> para obligar al registro.</li>
+            <li>Mantén un fondo de emergencia de al menos $5M antes de lanzarte a juegos medianos.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="icon-box" style="color:var(--clr-gold);"><i class="fa-solid fa-star"></i></div>
+            <h3 class="card-title" style="color:var(--clr-gold);">Easter Eggs y Logros Especiales</h3>
+          </div>
+          <ul class="step-checklist">
+            <li><strong>Pong Easter Egg:</strong> Crea un juego llamado "Pong" como primer título en el Garaje para un bono temático.</li>
+            <li><strong>Game Dev Tycoon Game:</strong> Desarrollar un juego sobre la propia industria con tema "Game Dev" genera un boost de ventas.</li>
+            <li><strong>Nombre de Empresa "Greenheart":</strong> Desbloquea diálogos especiales con los desarrolladores.</li>
+            <li><strong>Evitar la Quiebra:</strong> Si tus fondos caen por debajo de -$50K, la banca te ofrecerá un rescate financiero una sola vez.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="assets/gamepad_tycoon.png" alt="Logo">
+        <span>GAME DEV TYCOON STRATEGY GUIDE</span>
+      </div>
+      <div>
+        <p>Inspirado y adaptado para Game Dev Tycoon &copy; <a href="https://www.greenheartgames.com/" target="_blank" rel="noopener" style="color:var(--clr-cyan)">Greenheart Games</a>.</p>
+        <p>Desarrollado con ❤️ por <a href="https://github.com/alexanderoviedofadul" target="_blank" rel="noopener" style="color:var(--clr-cyan)">Alexander Oviedo Fadul</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>
