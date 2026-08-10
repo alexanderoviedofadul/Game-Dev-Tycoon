@@ -170,6 +170,20 @@ coverage.forEach(([group, ids]) => {
   check(`etiquetas de ${group} (${ids.length})`, missing.length === 0, missing.join(', ') || 'completas');
 });
 
+// Todo tema del catálogo completo necesita etiqueta en ambos idiomas.
+const catalogIds = GDT.topicCatalog.map(t => t.id);
+const missingCatalog = [];
+catalogIds.forEach(id => ['es', 'en'].forEach(l => {
+  if (DICT[l].topic[id] === undefined) missingCatalog.push(`${l}.${id}`);
+}));
+check(`etiquetas del catálogo de temas (${catalogIds.length})`,
+  missingCatalog.length === 0, missingCatalog.join(', ') || 'completas');
+
+// Coherencia: un tema con multiplicador numérico debe estar en el catálogo.
+check('los 12 temas con multiplicador están en el catálogo',
+  GDT.topics.every(t => catalogIds.includes(t.id)),
+  GDT.topics.filter(t => !catalogIds.includes(t.id)).map(t => t.id).join(', ') || 'todos');
+
 // Los temas de la comunidad también necesitan etiqueta.
 const communityIds = [...new Set(Object.values(GDT.communityCombos).flat())];
 const missingCommunity = [];

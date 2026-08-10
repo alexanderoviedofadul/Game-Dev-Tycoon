@@ -568,6 +568,72 @@ main { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
   background: var(--clr-gold); color: var(--clr-surface);
 }
 
+/* ── VALORACIONES DEL CATÁLOGO ───────────────────────────────────────────── */
+/* Cada insignia lleva su etiqueta y su valor en texto: el color acompaña, no
+   informa por sí solo. Los positivos reutilizan la rampa del heatmap. */
+.rate-row { display: flex; flex-wrap: wrap; gap: .3rem; }
+.rate {
+  display: inline-flex; align-items: baseline; gap: .3rem;
+  padding: .2rem .45rem;
+  font-size: .74rem; line-height: 1.4;
+  border: 2px solid var(--clr-frame);
+}
+.rate-label { font-weight: 700; }
+.rate-val { font-size: .68rem; opacity: .85; }
+.rate--p3 { background: var(--hm-5); color: var(--hm-5-ink); }
+.rate--p2 { background: var(--hm-4); color: var(--hm-4-ink); }
+.rate--p1 { background: var(--hm-3); color: var(--hm-3-ink); }
+.rate--n1,
+.rate--n2 { background: var(--clr-surface2); color: var(--clr-muted); border-style: dashed; }
+.rate--none { background: transparent; color: var(--clr-subtle); border-style: dotted; }
+
+.form-input {
+  font: inherit; font-size: .9rem;
+  min-height: 42px; padding: .5rem .7rem; min-width: 12rem; flex: 1;
+  color: var(--clr-text); background: var(--clr-surface);
+  border: var(--px) solid var(--clr-frame); border-radius: 0;
+}
+
+/* ── RANKING DE PLATAFORMAS ──────────────────────────────────────────────── */
+.rank-list { list-style: none; display: flex; flex-direction: column; gap: .5rem; margin-top: 1rem; }
+.rank {
+  display: grid; gap: .3rem .7rem; align-items: center;
+  grid-template-columns: auto 1fr;
+  padding: .6rem .7rem;
+  background: var(--clr-surface2);
+  border: 2px solid var(--clr-border);
+}
+.rank.is-affine { border-color: var(--clr-accent); }
+.rank-pos {
+  grid-row: span 2;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px;
+  font-family: var(--font-pixel); font-size: .6rem;
+  background: var(--clr-surface3); color: var(--clr-muted);
+}
+.rank.is-affine .rank-pos { background: var(--clr-accent); color: var(--clr-accent-ink); }
+.rank-tags { display: flex; flex-wrap: wrap; gap: .3rem; }
+
+/* ── SUGERENCIAS DE TÍTULO ───────────────────────────────────────────────── */
+.name-list { list-style: none; display: flex; flex-direction: column; gap: .5rem; margin: 1.2rem 0; }
+.name {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .6rem;
+  padding: .7rem .8rem;
+  background: var(--clr-surface); border: 2px solid var(--clr-frame);
+  box-shadow: 3px 3px 0 0 var(--pixel-cast);
+}
+.name-title {
+  flex: 1; min-width: 12rem;
+  font-family: var(--font-pixel); font-size: .68rem; line-height: 1.7;
+  color: var(--clr-accent);
+}
+.name-copy { min-height: 34px; padding: .35rem .7rem; font-size: .5rem; }
+.name-warn {
+  display: flex; align-items: center; gap: .4rem;
+  padding: .6rem .8rem; color: var(--clr-warn);
+  border: 2px dashed var(--clr-warn);
+}
+
 /* ── SEVERIDAD (icono + etiqueta, nunca solo color) ──────────────────────── */
 .sev { display: inline-flex; align-items: center; gap: .4rem; font-weight: 700; font-size: .8rem; }
 .sev--critical { color: var(--clr-bad); }

@@ -250,22 +250,124 @@
     ]);
     root.appendChild(el('div', { class: 'table-scroll' }, [table]));
 
-    // Combos de la comunidad: se listan aparte porque no traen multiplicador.
-    root.appendChild(el('h3', { class: 'card-title', text: t('ui.matrix.community') }));
+    renderCatalog(root, state);
+  }
+
+  // ── CATÁLOGO COMPLETO DE TEMAS ─────────────────────────────────────────────
+  // La matriz numérica solo cubre 12 temas; el juego tiene 67. Aquí están todos,
+  // con la escala cualitativa que sí está documentada.
+
+  /** Insignia de valoración. Siempre lleva texto: el color nunca va solo. */
+  function ratingBadge(value, label) {
+    const v = value === null || value === undefined ? 0 : value;
+    return el('span', { class: 'rate rate--' + (v > 0 ? 'p' + v : v < 0 ? 'n' + Math.abs(v) : 'none') }, [
+      el('span', { class: 'rate-label', text: label }),
+      el('span', { class: 'rate-val', text: t('ui.rating.' + v) })
+    ]);
+  }
+
+  function renderCatalog(root, state) {
+    root.appendChild(el('h3', { class: 'card-title', text: t('ui.matrix.catalog') }));
     root.appendChild(el('p', { class: 'muted' }, [
-      document.createTextNode(t('ui.matrix.communityNote')), refs(['forum7705'])
+      document.createTextNode(t('ui.matrix.catalogNote', { n: D.topicCatalog.length })),
+      refs(['forum7705', 'steam1365613422', 'steam1577227575'])
     ]));
-    const cg = el('div', { class: 'grid grid--3' });
-    D.genreOrder.forEach(g => {
-      const ids = D.communityCombos[g] || [];
-      if (!ids.length) return;
-      cg.appendChild(el('div', { class: 'card' }, [
-        el('h4', { class: 'card-title-sm', text: t('genre.' + g) }),
-        el('ul', { class: 'chip-list chip-list--tight' },
-          ids.map(id => el('li', { class: 'chip chip--soft', text: t('topic.' + id) })))
-      ]));
+
+    // Búsqueda insensible a acentos: quien escribe "tecnologia" debe encontrar
+    // "Tecnología".
+    const fold = x => x.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+    const body = el('tbody');
+
+    const search = el('input', {
+      type: 'search', class: 'form-input', id: 'topic-search',
+      placeholder: t('ui.matrix.search'), 'aria-label': t('ui.matrix.search'),
+      value: state.topicQuery || ''
     });
-    root.appendChild(cg);
+    const genreSel = el('select', { class: 'form-select', 'aria-label': t('ui.matrix.filterGenre') },
+      [el('option', { value: 'ALL', text: t('ui.matrix.filterGenre') })].concat(
+        D.genreOrder.map(g => el('option', { value: g, text: t('genre.' + g) }))));
+    genreSel.value = state.topicGenre || 'ALL';
+
+    const count = el('p', { class: 'muted-sm', 'aria-live': 'polite' });
+
+    function paint() {
+      const q = fold((state.topicQuery || '').trim());
+      const gf = state.topicGenre || 'ALL';
+      clear(body);
+
+      const rows = D.topicCatalog
+        .map(topic => ({
+          topic,
+          name: t('topic.' + topic.id),
+          // Se busca también por el nombre en el otro idioma y por el
+          // identificador: así el tema aparece aunque la traducción del juego no
+          // coincida exactamente con la nuestra.
+          alt: [I.DICT.es.topic[topic.id], I.DICT.en.topic[topic.id], topic.id].join(' ')
+        }))
+        .filter(({ topic, name, alt }) => {
+          if (q && !fold(name).includes(q) && !fold(alt).includes(q)) return false;
+          // Al filtrar por género se muestran solo los temas con valoración
+          // positiva conocida: un hueco es «sin dato», no una recomendación.
+          if (gf !== 'ALL' && !(topic.genres[gf] > 0)) return false;
+          return true;
+        })
+        .sort((a, b) => {
+          if (gf !== 'ALL') {
+            const d = (b.topic.genres[gf] || 0) - (a.topic.genres[gf] || 0);
+            if (d) return d;
+          }
+          return a.name.localeCompare(b.name);
+        });
+
+      count.textContent = t('ui.matrix.count', { n: rows.length });
+
+      if (!rows.length) {
+        body.appendChild(el('tr', {}, [el('td', { colspan: '3', class: 'muted', text: t('ui.empty') })]));
+        return;
+      }
+
+      rows.forEach(({ topic, name }) => {
+        const good = D.genreOrder.filter(g => topic.genres[g] > 0)
+          .sort((a, b) => topic.genres[b] - topic.genres[a]);
+
+        body.appendChild(el('tr', {}, [
+          el('th', { scope: 'row' }, [
+            document.createTextNode(name),
+            // Marca los que además tienen multiplicador numérico exacto arriba.
+            topic.hasMatrix ? el('span', { class: 'tag', title: t('ui.matrix.exact'), text: '◆' }) : null,
+            refs(topic.src)
+          ]),
+          el('td', {}, [
+            good.length
+              ? el('span', { class: 'rate-row' }, good.map(g => ratingBadge(topic.genres[g], t('genre.' + g))))
+              : el('span', { class: 'muted-sm', text: t('ui.platforms.noData') })
+          ]),
+          el('td', {}, [
+            el('span', { class: 'rate-row' },
+              D.AUDIENCE_ORDER.map(a => ratingBadge(topic.audience[a], t('audience.' + a))))
+          ])
+        ]));
+      });
+    }
+
+    search.addEventListener('input', () => { state.topicQuery = search.value; paint(); });
+    genreSel.addEventListener('change', () => { state.topicGenre = genreSel.value; paint(); });
+
+    root.appendChild(el('div', { class: 'toolbar' }, [search, genreSel]));
+    root.appendChild(count);
+    root.appendChild(el('div', { class: 'table-scroll' }, [
+      el('table', { class: 'data-table' }, [
+        el('thead', {}, [el('tr', {}, [
+          el('th', { scope: 'col', text: t('ui.matrix.colTopic') }),
+          el('th', { scope: 'col', text: t('ui.matrix.colGenres') }),
+          el('th', { scope: 'col', text: t('ui.matrix.colAudience') })
+        ])]),
+        body
+      ])
+    ]));
+
+    paint();
   }
 
   // ── 4. SLIDERS Y RATIO T/D ─────────────────────────────────────────────────
@@ -415,9 +517,95 @@
 
   // ── 5. PLATAFORMAS ─────────────────────────────────────────────────────────
 
+  /**
+   * Ordena las plataformas por idoneidad para un género, un público y un año de
+   * partida. La afinidad de género sale de las fuentes citadas; el multiplicador
+   * de público solo puntúa donde está publicado — una plataforma sin dato no se
+   * penaliza, se marca como desconocida.
+   */
+  function renderSuitability(root, state) {
+    const box = el('div', { class: 'card' });
+    box.appendChild(el('h3', { class: 'card-title' }, [
+      document.createTextNode(t('ui.platforms.suitability')), refs(['guia', 'steamUltimate'])
+    ]));
+    box.appendChild(el('p', { class: 'muted', text: t('ui.platforms.suitabilityNote') }));
+
+    const genreSel = el('select', { class: 'form-select', 'aria-label': t('ui.platforms.pickGenre') },
+      D.genreOrder.map(g => el('option', { value: g, text: t('genre.' + g) })));
+    genreSel.value = state.suitGenre || 'action';
+
+    const audSel = el('select', { class: 'form-select', 'aria-label': t('ui.platforms.pickAudience') },
+      D.AUDIENCE_ORDER.map(a => el('option', { value: a, text: t('audience.' + a) })));
+    audSel.value = state.suitAudience || 'everyone';
+
+    const yearSel = el('select', { class: 'form-select', 'aria-label': t('ui.platforms.pickYear') },
+      [el('option', { value: '0', text: t('ui.platforms.anyYear') })].concat(
+        Array.from({ length: 30 }, (_, i) => el('option', { value: String(i + 1), text: String(i + 1) }))));
+    yearSel.value = String(state.suitYear || 0);
+
+    const results = el('div', { 'aria-live': 'polite' });
+
+    function paint() {
+      const g = state.suitGenre || 'action';
+      const a = state.suitAudience || 'everyone';
+      const y = Number(state.suitYear || 0);
+      clear(results);
+
+      const ranked = D.platforms
+        .filter(p => !p.custom)
+        .map(p => {
+          const affine = Array.isArray(p.bestGenres) && p.bestGenres.includes(g);
+          const aud = p.audienceM ? p.audienceM[a] : null;
+          const available = !y || (p.year !== null && p.year <= y);
+          return { p, affine, aud, available };
+        })
+        .filter(r => !y || r.available)
+        .sort((x, z) =>
+          (z.affine - x.affine) ||
+          ((z.aud ?? 0) - (x.aud ?? 0)) ||
+          ((x.p.year ?? 99) - (z.p.year ?? 99)));
+
+      if (!ranked.length) {
+        results.appendChild(el('p', { class: 'muted', text: t('ui.empty') }));
+        return;
+      }
+
+      results.appendChild(el('ul', { class: 'rank-list' }, ranked.slice(0, 8).map((r, i) =>
+        el('li', { class: 'rank' + (r.affine ? ' is-affine' : '') }, [
+          el('span', { class: 'rank-pos', text: String(i + 1) }),
+          el('span', { class: 'rank-name' }, [
+            el('strong', { text: t('platform.' + r.p.id) }),
+            el('span', { class: 'muted-sm', text: ' · ' + r.p.real })
+          ]),
+          el('span', { class: 'rank-tags' }, [
+            el('span', { class: 'chip chip--soft', text: r.affine ? t('ui.platforms.affine') : t('ui.platforms.notAffine') }),
+            el('span', { class: 'chip chip--soft', text: r.aud === null || r.aud === undefined
+              ? t('audience.' + a) + ': ' + t('ui.platforms.noData')
+              : t('audience.' + a) + ': ×' + I.num(r.aud) }),
+            r.p.year ? el('span', { class: 'chip chip--soft', text: t('ui.platforms.year', { y: r.p.year, m: r.p.month }) }) : null
+          ])
+        ])
+      )));
+    }
+
+    genreSel.addEventListener('change', () => { state.suitGenre = genreSel.value; paint(); });
+    audSel.addEventListener('change', () => { state.suitAudience = audSel.value; paint(); });
+    yearSel.addEventListener('change', () => { state.suitYear = Number(yearSel.value); paint(); });
+
+    box.appendChild(el('div', { class: 'toolbar' }, [
+      el('label', { class: 'field' }, [el('span', { text: t('ui.platforms.pickGenre') }), genreSel]),
+      el('label', { class: 'field' }, [el('span', { text: t('ui.platforms.pickAudience') }), audSel]),
+      el('label', { class: 'field' }, [el('span', { text: t('ui.platforms.pickYear') }), yearSel])
+    ]));
+    box.appendChild(results);
+    root.appendChild(box);
+    paint();
+  }
+
   function renderPlatforms(root, state, onFilter) {
     clear(root);
     root.appendChild(sectionHeading('ui.platforms.title', 'monitor'));
+    renderSuitability(root, state);
 
     const filters = el('div', { class: 'toolbar', role: 'group', 'aria-label': t('ui.platforms.title') });
     [['ALL', 'ui.platforms.all'], ['ETERNAL', 'ui.platforms.eternal'], ['CUSTOM', 'ui.platforms.custom']]
@@ -468,6 +656,93 @@
         body
       ])
     ]));
+  }
+
+  // ── SUGERENCIAS DE TÍTULO ──────────────────────────────────────────────────
+  // Única sección que NO muestra datos del juego. Se etiqueta como ayuda
+  // creativa para que no se confunda con el resto, donde toda cifra va con
+  // fuente. Lo documentado aquí son los patrones de titulación, no los títulos.
+
+  function renderNames(root, state, onChange) {
+    clear(root);
+    root.appendChild(sectionHeading('ui.names.title', 'star'));
+    root.appendChild(el('p', { class: 'muted', text: t('ui.names.note') }));
+
+    const topicSel = el('select', { class: 'form-select', 'aria-label': t('ui.names.topic') },
+      D.topicCatalog
+        .map(x => ({ id: x.id, name: t('topic.' + x.id) }))
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map(x => el('option', { value: x.id, text: x.name })));
+    topicSel.value = state.nameTopic || 'fantasy';
+
+    const genreSel = el('select', { class: 'form-select', 'aria-label': t('ui.names.genre') },
+      D.genreOrder.map(g => el('option', { value: g, text: t('genre.' + g) })));
+    genreSel.value = state.nameGenre || state.genre || 'action';
+
+    const moreBtn = el('button', { type: 'button', class: 'btn', text: t('ui.names.more') });
+    const list = el('ol', { class: 'name-list', 'aria-live': 'polite' });
+
+    function paint() {
+      const topicId = state.nameTopic || 'fantasy';
+      const genreId = state.nameGenre || 'action';
+      const topic = D.topicCatalog.find(x => x.id === topicId);
+      clear(list);
+
+      // Aviso si la combinación elegida está desaconsejada: el nombre no salva
+      // un combo malo, y conviene decirlo aquí y no solo en la matriz.
+      const rating = topic ? topic.genres[genreId] : null;
+      if (rating !== null && rating !== undefined && rating < 0) {
+        list.appendChild(el('li', { class: 'name-warn' }, [
+          icon('warn'),
+          document.createTextNode(' ' + t('topic.' + topicId) + ' × ' + t('genre.' + genreId) +
+            ' — ' + t('ui.rating.' + rating))
+        ]));
+      }
+
+      GDT.names.generate({
+        topic: t('topic.' + topicId),
+        genreId,
+        lang: I.getLang(),
+        count: 6,
+        seed: state.nameSeed || 1
+      }).forEach(n => {
+        const copy = el('button', {
+          type: 'button', class: 'btn btn--ghost name-copy', text: t('ui.names.copy')
+        });
+        copy.addEventListener('click', () => {
+          if (navigator.clipboard) navigator.clipboard.writeText(n.title);
+          copy.textContent = t('ui.names.copied');
+          setTimeout(() => { copy.textContent = t('ui.names.copy'); }, 1500);
+        });
+        list.appendChild(el('li', { class: 'name' }, [
+          el('span', { class: 'name-title', text: n.title }),
+          el('span', { class: 'chip chip--soft', text: t('ui.pattern.' + n.pattern) }),
+          copy
+        ]));
+      });
+    }
+
+    topicSel.addEventListener('change', () => onChange({ nameTopic: topicSel.value }));
+    genreSel.addEventListener('change', () => onChange({ nameGenre: genreSel.value }));
+    moreBtn.addEventListener('click', () => onChange({ nameSeed: (state.nameSeed || 1) + 1 }));
+
+    root.appendChild(el('div', { class: 'toolbar' }, [
+      el('label', { class: 'field' }, [el('span', { text: t('ui.names.topic') }), topicSel]),
+      el('label', { class: 'field' }, [el('span', { text: t('ui.names.genre') }), genreSel]),
+      moreBtn
+    ]));
+    root.appendChild(list);
+    paint();
+
+    // Los nombres con easter egg SÍ son un dato del juego, así que van aparte
+    // y con su fuente.
+    root.appendChild(el('h3', { class: 'card-title', text: t('ui.names.eggTitle') }));
+    root.appendChild(el('p', { class: 'muted' }, [
+      document.createTextNode(t('ui.names.eggNote')), refs(['wikiEE'])
+    ]));
+    root.appendChild(el('ul', { class: 'bullet' },
+      D.easterEggs.filter(e => e.id !== 'redBarrels' && e.id !== 'elevenOutOfTen')
+        .map(e => el('li', { text: t('easterEgg.' + e.id) }))));
   }
 
   // ── 6. EQUIPO ──────────────────────────────────────────────────────────────
@@ -587,6 +862,6 @@
   global.GDT.ui = {
     el, clear, refs, icon,
     renderAlgorithm, renderProgress, renderMatrix, renderSliders,
-    renderPlatforms, renderTeam, renderExtras, renderSources
+    renderPlatforms, renderNames, renderTeam, renderExtras, renderSources
   };
 })(window);

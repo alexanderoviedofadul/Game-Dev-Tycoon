@@ -12,7 +12,7 @@ npx html-validate index.html
 # 3. Accesibilidad: ocho secciones × dos temas
 python3 -m http.server 8000 &
 for theme in light dark; do
-  for s in algorithm progress matrix sliders platforms team extras sources; do
+  for s in algorithm progress matrix sliders platforms names team extras sources; do
     npx pa11y@8 --config .github/pa11y.json \
       "http://localhost:8000/index.html#/$s?tema=$theme"
   done
@@ -21,7 +21,7 @@ done
 
 `.github/workflows/ci.yml` ejecuta las tres en cada push y pull request.
 
-> **Auditar solo la portada no sirve.** Los paneles se renderizan al seleccionarlos, así que una auditoría de `index.html` a secas deja siete secciones sin cubrir.
+> **Auditar solo la portada no sirve.** Los paneles se renderizan al seleccionarlos, así que una auditoría de `index.html` a secas deja ocho secciones sin cubrir.
 >
 > **Auditar un solo tema tampoco.** Cada tema tiene su propio juego de tokens. Un fallo de contraste que solo afectaba al modo claro pasó desapercibido porque el navegador local estaba en modo oscuro; lo detectó CI, donde el runner arranca en claro.
 

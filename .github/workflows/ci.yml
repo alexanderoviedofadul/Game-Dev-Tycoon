@@ -45,7 +45,7 @@ jobs:
       - name: Accesibilidad (WCAG 2.1 AA)
         run: |
           for theme in light dark; do
-            for s in algorithm progress matrix sliders platforms team extras sources; do
+            for s in algorithm progress matrix sliders platforms names team extras sources; do
               echo "── $theme / $s"
               npx -y pa11y@8 --config .github/pa11y.json \
                 "http://localhost:8000/index.html#/$s?tema=$theme"

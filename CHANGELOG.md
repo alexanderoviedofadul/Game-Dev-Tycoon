@@ -5,6 +5,36 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.2.0] - 2026-08-09
+
+### Añadido
+- **Catálogo completo de 67 temas**, con su idoneidad por género y por público en
+  la escala documentada. Antes solo había 12 temas con multiplicador y 30 sueltos
+  en una lista; faltaban por completo temas que el juego muestra desde el
+  principio, como Mascota virtual y Tecnología.
+- **Buscador de temas** insensible a acentos que cruza además con el nombre en
+  inglés y con el identificador, para que un tema aparezca aunque la traducción
+  del juego no coincida con la nuestra.
+- **«¿Qué plataforma me conviene?»**: ordena las plataformas por idoneidad según
+  género, público y año de partida, marcando explícitamente dónde no hay
+  multiplicador publicado.
+- **Pestaña «Nombres»**: sugiere al menos cinco títulos por combinación de tema y
+  género, con ocho patrones de titulación documentados (la convención
+  «Título: Subtítulo», la fórmula «X de Y» con los repertorios clásicos, la
+  secuela numerada y la tendencia moderna a suprimir los dos puntos). Genera con
+  semilla, así que «generar otros» da una tanda nueva y reproducible. Es la única
+  sección que no muestra datos del juego y se advierte en ella.
+- Los nombres que activan un easter egg se listan aparte, con su fuente, porque
+  esos sí son un dato del juego.
+
+### Corregido
+- Etiquetas que no coincidían con las del juego en español: «Granja» →
+  **Agricultura**, «Hombre lobo» → **Hombres lobo**, «Espacio» → **Espacial** y
+  «RPG» → **Rol**.
+- Los títulos generados salían agramaticales en español: el inglés admite
+  yuxtaponer sustantivos y el español necesita conector y artículo. Ahora cada
+  palabra del repertorio lleva su género y número, y «de + el» se contrae en «del».
+
 ## [2.1.0] - 2026-08-09
 
 ### Añadido

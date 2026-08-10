@@ -35,7 +35,7 @@
     };
   })();
 
-  const SECTIONS = ['algorithm', 'progress', 'matrix', 'sliders', 'platforms', 'team', 'extras', 'sources'];
+  const SECTIONS = ['algorithm', 'progress', 'matrix', 'sliders', 'platforms', 'names', 'team', 'extras', 'sources'];
   const KEY = 'gdt.v2';
 
   // ── Estado ─────────────────────────────────────────────────────────────────
@@ -208,6 +208,9 @@
           state.platformFilter = val; persist(); writeHash(true); renderCurrent();
         });
         break;
+      case 'names':
+        U.renderNames(root, state, patch => { Object.assign(state, patch); persist(); renderCurrent(); });
+        break;
       case 'team': U.renderTeam(root); break;
       case 'extras': U.renderExtras(root); break;
       case 'sources': U.renderSources(root); break;
@@ -264,7 +267,7 @@
   // ── Arranque ───────────────────────────────────────────────────────────────
   function boot() {
     // Sin datos no hay página: se avisa en vez de dejar un main en blanco.
-    if (!window.GDT || !GDT.genres || !GDT.engine || !GDT.ui) {
+    if (!window.GDT || !GDT.genres || !GDT.engine || !GDT.ui || !GDT.names) {
       const main = document.getElementById('main');
       if (main) {
         main.innerHTML = '';

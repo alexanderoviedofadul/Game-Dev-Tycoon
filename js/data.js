@@ -66,6 +66,16 @@ window.GDT = (function () {
       url: 'https://gamefaqs.gamespot.com/pc/713603-game-dev-tycoon/faqs/67064',
       kind: 'community'
     },
+    steam1365613422: {
+      label: 'Steam — Combinaciones nuevas de la v1.6',
+      url: 'https://steamcommunity.com/sharedfiles/filedetails/?id=1365613422',
+      kind: 'community'
+    },
+    steam1577227575: {
+      label: 'Steam — Todas las combinaciones tema/público (v1.6)',
+      url: 'https://steamcommunity.com/sharedfiles/filedetails/?id=1577227575',
+      kind: 'community'
+    },
     reddit178: {
       label: 'Reddit — Simple(-ish) guide for 1.7.8',
       url: 'https://www.reddit.com/r/GameDevTycoon/comments/1o1nmk2/simpleish_guide_for_178/',
@@ -180,6 +190,112 @@ window.GDT = (function () {
     simulation: [],
     casual:     []
   };
+
+  // ── CATÁLOGO COMPLETO DE TEMAS ─────────────────────────────────────────────
+  // La matriz numérica de arriba solo cubre los 12 temas que la guía publica con
+  // multiplicador. El juego tiene muchos más, así que aquí va el catálogo
+  // completo con la escala cualitativa que sí está documentada.
+  //
+  // Codificación compacta, seis caracteres para los géneros en el orden
+  // action · adventure · rpg · simulation · strategy · casual, y tres para los
+  // públicos en el orden young · everyone · mature:
+  //
+  //   A = +++ excelente   B = ++ bueno   C = + aceptable
+  //   D = --  malo        E = --- pésimo  . = sin dato publicado
+  //
+  // El punto importa: para los temas anteriores a la 1.6 la fuente publica solo
+  // las combinaciones excelentes, así que el resto queda «sin dato» y NO se
+  // marca como malo. Los 15 temas de la 1.6 sí traen la fila completa.
+  const RATING = { A: 3, B: 2, C: 1, D: -1, E: -2, '.': null };
+
+  const TOPIC_ROWS = [
+    // id                 género   público  origen del cruce por género
+    ['abstract',        'BAEECE', 'BAE', 'full'],
+    ['airplane',        'A..AAA', 'AAB', 'great'],
+    ['aliens',          'A.A.A.', 'ABA', 'great'],
+    ['altHistory',      'A.A...', 'ABA', 'great'],
+    ['assassin',        'ADACEE', 'AEA', 'full'],
+    ['business',        '...AA.', 'EBD', 'great'],
+    ['city',            '...AA.', 'DBC', 'great'],
+    ['colonization',    'DEEAAD', 'DDC', 'full'],
+    ['comedy',          '.A...A', 'ECA', 'great'],
+    ['construction',    'DEEABC', 'DCB', 'full'],
+    ['cooking',         'BDCADA', 'BCE', 'full'],
+    ['crime',           'ADCBDE', 'AEA', 'full'],
+    ['cyberpunk',       'A.A...', 'ADA', 'great'],
+    ['dance',           '...A.A', 'DAC', 'great'],
+    ['detective',       '.AA...', 'EBC', 'great'],
+    ['disasters',       'BCDAAD', 'BDA', 'full'],
+    ['dungeon',         'A.AAA.', 'ACA', 'great'],
+    ['dystopian',       'CBCABE', 'CEA', 'full'],
+    ['evolution',       '...AA.', 'DCD', 'great'],
+    ['expedition',      'DBEBAE', 'DCB', 'full'],
+    ['extremeSports',   'AEEADB', 'AAD', 'full'],
+    ['fantasy',         'AAA.A.', 'AAA', 'great'],
+    ['farming',         'EDEAEA', 'EBC', 'full'],
+    ['fashion',         '..AA.A', 'EAE', 'great'],
+    ['gameDev',         '...A..', 'EBD', 'great'],
+    ['government',      '...AA.', 'EEC', 'great'],
+    ['hacking',         '...AA.', 'DDA', 'great'],
+    ['history',         '...AA.', 'CCB', 'great'],
+    ['horror',          'A.....', 'AEA', 'great'],
+    ['hospital',        '...A..', 'EDC', 'great'],
+    ['hunting',         'A..A..', 'ABB', 'great'],
+    ['law',             '.A....', 'ECD', 'great'],
+    ['life',            '.A.A..', 'EAC', 'great'],
+    ['madScience',      'BADBEE', 'BCA', 'full'],
+    ['martialArts',     'A.AA.A', 'ADA', 'great'],
+    ['medieval',        'AAA.A.', 'AAB', 'great'],
+    ['military',        'A..AA.', 'ADA', 'great'],
+    ['movies',          '...A.A', 'CBB', 'great'],
+    ['music',           'A..A.A', 'AAC', 'great'],
+    ['mystery',         '.AA...', 'ECA', 'great'],
+    ['mythology',       'ACBBCD', 'ADA', 'full'],
+    ['ninja',           'A.....', 'AAB', 'great'],
+    ['pirate',          '.A....', 'CAC', 'great'],
+    ['postApocalyptic', 'A.A...', 'AEA', 'great'],
+    ['prison',          'AA.A..', 'ADA', 'great'],
+    ['racing',          '...A.A', 'BAB', 'great'],
+    ['rhythm',          'A..A.A', 'AAC', 'great'],
+    ['romance',         '.A....', 'ECA', 'great'],
+    ['school',          '.AAAA.', 'CAD', 'great'],
+    ['scifi',           'AAAAA.', 'ACA', 'great'],
+    ['space',           'A..AA.', 'ACA', 'great'],
+    ['sports',          'A..A.A', 'AAC', 'great'],
+    ['spy',             'AAA...', 'ACA', 'great'],
+    ['startups',        '...A..', '...', 'great'],
+    ['superheroes',     'A.....', 'AAA', 'great'],
+    ['surgery',         '...A..', 'CCB', 'great'],
+    ['technology',      'EDEABE', 'ECB', 'full'],
+    ['thief',           'BCABEB', 'BDA', 'full'],
+    ['timeTravel',      'AA....', 'BBC', 'great'],
+    ['transport',       '...AA.', 'EBD', 'great'],
+    ['ufo',             '....A.', 'ACB', 'great'],
+    ['vampire',         '..A...', 'ADA', 'great'],
+    ['virtualPet',      '...A.A', 'EAD', 'great'],
+    ['vocabulary',      '...AA.', 'EBE', 'great'],
+    ['werewolf',        'A.A...', 'ADA', 'great'],
+    ['wildWest',        '..A...', 'BAA', 'great'],
+    ['zombies',         'AA....', 'ABA', 'great']
+  ];
+
+  const AUDIENCE_ORDER = ['young', 'everyone', 'mature'];
+
+  const topicCatalog = TOPIC_ROWS.map(([id, g, a, genreSrc]) => {
+    const genres = {};
+    genreOrder.forEach((key, i) => { genres[key] = RATING[g[i]]; });
+    const audience = {};
+    AUDIENCE_ORDER.forEach((key, i) => { audience[key] = RATING[a[i]]; });
+    return {
+      id, genres, audience,
+      // 'full' = la fuente publica la fila entera; 'great' = solo las excelentes,
+      // así que un null significa «no publicado», nunca «malo».
+      genreSrc,
+      // Los 12 de la matriz llevan además multiplicador numérico exacto.
+      hasMatrix: topics.some(t => t.id === id),
+      src: genreSrc === 'full' ? ['steam1365613422', 'steam1577227575'] : ['forum7705', 'steam1577227575']
+    };
+  });
 
   // ── PLATAFORMAS ────────────────────────────────────────────────────────────
   // Costes en dólares como número. `audienceM` solo se rellena donde la guía
@@ -299,6 +415,7 @@ window.GDT = (function () {
 
   return {
     sources, fields, phases, genres, genreOrder, topics, communityCombos,
+    topicCatalog, RATING, AUDIENCE_ORDER,
     platforms, milestones, researchUnlocks, penalties,
     recruiting, specializations, training, pirateMode, easterEggs
   };
