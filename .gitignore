@@ -52,6 +52,11 @@ out/
 .env.*.local
 
 # =========================
+# Herramientas locales
+# =========================
+.claude/settings.local.json
+
+# =========================
 # Misc
 # =========================
 *.zip

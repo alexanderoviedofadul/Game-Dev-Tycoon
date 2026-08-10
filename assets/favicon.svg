@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Game Dev Tycoon">
+  <rect width="32" height="32" rx="6" fill="#0f172a"/>
+  <!-- Cinco peldaños de la rampa del heatmap, de menor a mayor compatibilidad -->
+  <rect x="5"  y="19" width="4" height="8"  rx="1" fill="#184f95"/>
+  <rect x="10" y="16" width="4" height="11" rx="1" fill="#256abf"/>
+  <rect x="15" y="12" width="4" height="15" rx="1" fill="#3987e5"/>
+  <rect x="20" y="9"  width="4" height="18" rx="1" fill="#6da7ec"/>
+  <rect x="25" y="5"  width="3" height="22" rx="1" fill="#9ec5f4"/>
+</svg>

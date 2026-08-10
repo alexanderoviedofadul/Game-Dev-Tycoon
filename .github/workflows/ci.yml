@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Datos, motor de cálculo e i18n. Sin dependencias: Node puro.
+      - name: Auditoría de datos, motor e i18n
+        run: node tests/audit.js
+
+      - name: Validación de HTML
+        run: npx -y html-validate index.html
+
+      - name: Servir el sitio
+        run: |
+          python3 -m http.server 8000 &
+          npx -y wait-on http://localhost:8000/index.html
+
+      # Cada sección se audita por separado: los paneles se renderizan al
+      # seleccionarlos, así que auditar solo la portada dejaría siete sin cubrir.
+      - name: Accesibilidad (WCAG 2.1 AA)
+        run: |
+          for s in algorithm progress matrix sliders platforms team extras sources; do
+            echo "── $s"
+            npx -y pa11y@8 --standard WCAG2AA --timeout 30000 \
+              "http://localhost:8000/index.html#/$s"
+          done
