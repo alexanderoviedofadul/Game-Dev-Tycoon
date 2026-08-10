@@ -9,7 +9,7 @@ node tests/audit.js
 # 2. Marcado
 npx html-validate index.html
 
-# 3. Accesibilidad: ocho secciones × dos temas
+# 3. Accesibilidad: nueve secciones × dos temas
 python3 -m http.server 8000 &
 for theme in light dark; do
   for s in algorithm progress matrix sliders platforms names team extras sources; do
@@ -80,8 +80,8 @@ Ejecuta `js/data.js`, `js/engine.js` y `js/i18n.js` dentro de un `vm` de Node co
 
 ### i18n
 
-- **Paridad de claves**: la diferencia simétrica entre `es` y `en` es vacía (252 claves).
-- **Cobertura**: todo `id` de datos tiene etiqueta en ambos idiomas — géneros, campos, temas, plataformas, hitos, penalizaciones, contratación, investigación, easter eggs y los 30 temas de la comunidad.
+- **Paridad de claves**: la diferencia simétrica entre `es` y `en` es vacía (303 claves).
+- **Cobertura**: todo `id` de datos tiene etiqueta en ambos idiomas — géneros, campos, temas, plataformas, hitos, penalizaciones, contratación, investigación, easter eggs y los 67 temas del catálogo.
 - **Resolución de claves de `js/ui.js`**: se extraen del código fuente las 61 claves literales y los 16 prefijos construidos por concatenación, y se comprueba que todos resuelven.
 
 > Este último test nació de un bug real: `t('verdict.off')` mostraba literalmente `verdict.off` en pantalla porque esas claves viven bajo el grupo `ui`, no en la raíz. Ahora esa clase de error falla en CI.
@@ -115,7 +115,7 @@ Recorrer la aplicación entera **solo con teclado**:
 
 El validador de paletas comprueba color, no maquetación. Hay que **mirar el resultado**: colisiones de etiquetas, geometría y desbordamiento.
 
-Comprobado a 400 px de viewport: `document.scrollWidth === clientWidth` en las ocho secciones — el `body` nunca hace scroll horizontal; lo hacen la navegación y las tablas dentro de su propia caja.
+Comprobado a 400 px de viewport: `document.scrollWidth === clientWidth` en las nueve secciones — el `body` nunca hace scroll horizontal; lo hacen la navegación y las tablas dentro de su propia caja.
 
 ## Herramientas de apoyo
 
