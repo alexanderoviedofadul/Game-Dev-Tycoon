@@ -1,0 +1,59 @@
+# =========================
+# Archivos del Sistema Operativo
+# =========================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# =========================
+# IDEs y Editores
+# =========================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# =========================
+# Node.js / npm
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# =========================
+# Archivos de Build y Temporales
+# =========================
+dist/
+build/
+out/
+*.log
+*.tmp
+*.temp
+*.cache
+
+# =========================
+# Variables de Entorno
+# =========================
+.env
+.env.local
+.env.*.local
+
+# =========================
+# Misc
+# =========================
+*.zip
+*.tar.gz
+*.rar
