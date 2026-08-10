@@ -51,10 +51,76 @@
 
   <a class="skip-link" href="#main" data-i18n="ui.skip">Saltar al contenido</a>
 
+  <!-- Iconos dibujados sobre rejilla de 8x8 píxeles. Van en línea, no en un
+       fichero .svg externo: <use href="sprite.svg#id"> falla entre documentos
+       bajo file://, que es justo el caso que este proyecto debe soportar.
+       `crispEdges` impide que el antialiasing redondee el pixel-art. -->
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <defs>
+      <!-- Chip: el algoritmo de puntuación -->
+      <symbol id="i-chip" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M2 0h1v1H2zM5 0h1v1H5zM2 7h1v1H2zM5 7h1v1H5zM0 2h1v1H0zM0 5h1v1H0zM7 2h1v1H7zM7 5h1v1H7z
+                 M1 1h6v1H1zM1 6h6v1H1zM1 2h1v4H1zM6 2h1v4H6zM3 3h2v2H3z"/>
+      </symbol>
+      <!-- Escalera ascendente: progresión -->
+      <symbol id="i-steps" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M0 6h2v2H0zM2 4h2v4H2zM4 2h2v6H4zM6 0h2v8H6z"/>
+      </symbol>
+      <!-- Rejilla 3x3: la matriz -->
+      <symbol id="i-grid" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M0 0h2v2H0zM3 0h2v2H3zM6 0h2v2H6zM0 3h2v2H0zM3 3h2v2H3zM6 3h2v2H6zM0 6h2v2H0zM3 6h2v2H3zM6 6h2v2H6z"/>
+      </symbol>
+      <!-- Deslizadores -->
+      <symbol id="i-sliders" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M0 1h8v1H0zM5 0h2v3H5zM0 6h8v1H0zM2 5h2v3H2z"/>
+      </symbol>
+      <!-- Monitor: plataformas -->
+      <symbol id="i-monitor" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M0 0h8v1H0zM0 5h8v1H0zM0 1h1v4H0zM7 1h1v4H7zM3 6h2v1H3zM2 7h4v1H2z"/>
+      </symbol>
+      <!-- Dos figuras: equipo -->
+      <symbol id="i-team" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M1 0h2v2H1zM0 3h4v2H0zM1 5h1v3H1zM5 2h2v2H5zM4 5h4v1H4zM5 6h1v2H5z"/>
+      </symbol>
+      <!-- Estrella: extras y secretos -->
+      <symbol id="i-star" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M3 0h2v3H3zM0 2h8v2H0zM1 4h6v1H1zM2 5h4v1H2zM1 6h2v2H1zM5 6h2v2H5z"/>
+      </symbol>
+      <!-- Libro abierto: fuentes -->
+      <symbol id="i-book" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M0 1h3v1H0zM0 2h1v5H0zM0 7h3v1H0zM5 1h3v1H5zM7 2h1v5H7zM5 7h3v1H5zM3 0h2v8H3z"/>
+      </symbol>
+      <!-- Marca de verificación -->
+      <symbol id="i-check" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M0 4h2v2H0zM2 6h2v2H2zM4 4h2v2H4zM6 2h2v2H6zM5 0h3v2H5z"/>
+      </symbol>
+      <!-- Aviso -->
+      <symbol id="i-warn" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M3 0h2v1H3zM2 1h4v2H2zM1 3h6v2H1zM0 5h8v2H0zM3 7h2v1H3z"/>
+      </symbol>
+      <!-- Prohibido: severidad crítica -->
+      <symbol id="i-block" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M2 0h4v1H2zM1 1h6v1H1zM0 2h8v4H0zM1 6h6v1H1zM2 7h4v1H2z"/>
+      </symbol>
+      <!-- Sol y luna: conmutador de tema. Son iconos y no glifos porque ni ☀ ni ☾
+           existen en Press Start 2P y el navegador los sustituye por otra fuente. -->
+      <symbol id="i-sun" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M3 0h2v1H3zM3 7h2v1H3zM0 3h1v2H0zM7 3h1v2H7zM1 1h1v1H1zM6 1h1v1H6zM1 6h1v1H1zM6 6h1v1H6zM3 2h2v1H3zM2 3h4v2H2zM3 5h2v1H3z"/>
+      </symbol>
+      <symbol id="i-moon" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M3 0h3v1H3zM2 1h2v1H2zM1 2h2v2H1zM1 4h2v2H1zM2 6h2v1H2zM3 7h3v1H3zM6 1h1v1H6zM7 2h1v4H7zM6 6h1v1H6z"/>
+      </symbol>
+      <!-- Mando: la marca -->
+      <symbol id="i-pad" viewBox="0 0 8 8" shape-rendering="crispEdges">
+        <path d="M1 2h6v1H1zM0 3h8v3H0zM1 6h1v1H1zM6 6h1v1H6zM2 4h1v1H2zM5 4h1v1H5z"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <header class="site-header">
     <div class="header-inner">
       <a href="./" id="brand-home" class="brand">
-        <span class="brand-mark" aria-hidden="true">▚</span>
+        <svg class="icon brand-mark" aria-hidden="true" focusable="false"><use href="#i-pad"/></svg>
         <span class="brand-text">
           <span class="brand-title">GAME DEV TYCOON</span>
           <span class="brand-subtitle" data-i18n="ui.brand.subtitle">Guía Estratégica Basada en Fuentes</span>
@@ -62,8 +128,8 @@
       </a>
 
       <div class="header-actions">
-        <button type="button" id="lang-toggle" class="icon-btn" data-i18n-attr="aria-label:ui.lang.toggle">EN</button>
-        <button type="button" id="theme-toggle" class="icon-btn" aria-pressed="false" data-i18n-attr="aria-label:ui.theme.toggle">☾</button>
+        <button type="button" id="lang-toggle" class="icon-btn" aria-label="Cambiar idioma" data-i18n-attr="aria-label:ui.lang.toggle">EN</button>
+        <button type="button" id="theme-toggle" class="icon-btn" aria-pressed="false" aria-label="Cambiar tema" data-i18n-attr="aria-label:ui.theme.toggle"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-moon"/></svg></button>
       </div>
     </div>
 
@@ -83,6 +149,14 @@
 
   <main id="main">
     <section class="hero">
+      <!-- Barras de progreso de un desarrollo, dibujadas en pixel-art. Decorativo. -->
+      <svg class="hero-art" viewBox="0 0 48 16" aria-hidden="true" focusable="false" shape-rendering="crispEdges">
+        <g class="hero-art-bars">
+          <rect x="0"  y="10" width="6" height="6"/><rect x="8"  y="7"  width="6" height="9"/>
+          <rect x="16" y="4"  width="6" height="12"/><rect x="24" y="8" width="6" height="8"/>
+          <rect x="32" y="2"  width="6" height="14"/><rect x="40" y="6" width="6" height="10"/>
+        </g>
+      </svg>
       <h1 class="hero-title" lang="es">Domina el algoritmo, no la suerte</h1>
       <h1 class="hero-title" lang="en">Master the algorithm, not the luck</h1>
       <p class="hero-desc" lang="es">Game Dev Tycoon es un simulador de optimización cuantitativa. Cada decisión aplica un modificador sobre una variable oculta de rendimiento. Esta guía expone esos números en lugar de describirlos, y enlaza cada afirmación con la fuente que la respalda.</p>

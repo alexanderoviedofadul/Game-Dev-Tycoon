@@ -13,8 +13,8 @@ npx html-validate index.html
 python3 -m http.server 8000 &
 for theme in light dark; do
   for s in algorithm progress matrix sliders platforms team extras sources; do
-    npx pa11y@8 --config ".github/pa11y-$theme.json" \
-      "http://localhost:8000/index.html#/$s"
+    npx pa11y@8 --config .github/pa11y.json \
+      "http://localhost:8000/index.html#/$s?tema=$theme"
   done
 done
 ```
@@ -23,7 +23,29 @@ done
 
 > **Auditar solo la portada no sirve.** Los paneles se renderizan al seleccionarlos, así que una auditoría de `index.html` a secas deja siete secciones sin cubrir.
 >
-> **Auditar un solo tema tampoco.** Cada tema tiene su propio juego de tokens. Un fallo de contraste que solo afectaba al modo claro pasó desapercibido porque el navegador que ejecutaba las pruebas estaba en modo oscuro; lo detectó CI, donde el runner arranca en claro. De ahí que los ficheros `.github/pa11y-{light,dark}.json` fijen el esquema de color explícitamente en lugar de heredar el del sistema.
+> **Auditar un solo tema tampoco.** Cada tema tiene su propio juego de tokens. Un fallo de contraste que solo afectaba al modo claro pasó desapercibido porque el navegador local estaba en modo oscuro; lo detectó CI, donde el runner arranca en claro.
+
+### Por qué el tema se fija con `?tema=`, no con la preferencia del navegador
+
+El primer intento usó `--blink-settings=preferredColorScheme`. Es poco fiable — comprobado midiendo el fondo renderizado:
+
+| Bandera | Tema real |
+|---|---|
+| sin bandera | oscuro (en local) · **claro** (en el runner) |
+| `=0` | oscuro |
+| `=1` | claro |
+| `=2` | **claro**, no oscuro |
+
+Con esa bandera, la auditoría llegó a ejecutar **el tema claro dos veces sin cubrir nunca el oscuro**, y parecía verde.
+
+El parámetro `?tema=light|dark` lo resuelve: usa el mecanismo de la propia aplicación (`data-theme`), es determinista en cualquier entorno y además hace que el tema viaje en los enlaces compartidos.
+
+Para comprobar que una bandera de navegador hace lo que crees, mide el resultado:
+
+```js
+matchMedia('(prefers-color-scheme: dark)').matches
+getComputedStyle(document.body).backgroundColor
+```
 
 ### La trampa de los dos fondos
 

@@ -32,9 +32,13 @@ jobs:
       # Por sección, porque los paneles se renderizan al seleccionarlos: auditar
       # solo la portada dejaría siete sin cubrir.
       #
-      # Por tema, porque cada uno tiene su propio juego de tokens de color. Un
-      # fallo de contraste solo del modo claro pasó desapercibido auditando en un
-      # navegador que estaba en modo oscuro.
+      # Por tema, porque cada uno tiene su propio juego de tokens de color.
+      #
+      # El tema se fija con el parámetro ?tema= de la propia aplicación, no con
+      # la preferencia del navegador: --blink-settings=preferredColorScheme no
+      # da oscuro de forma fiable, y su valor por defecto cambia según el
+      # entorno. Con la bandera, esta auditoría llegó a probar el tema claro dos
+      # veces sin cubrir el oscuro.
       #
       # La configuración pasa además --no-sandbox: los runners de GitHub no
       # tienen sandbox de usuario y el Chromium de pa11y no arranca sin ello.
@@ -43,7 +47,7 @@ jobs:
           for theme in light dark; do
             for s in algorithm progress matrix sliders platforms team extras sources; do
               echo "── $theme / $s"
-              npx -y pa11y@8 --config ".github/pa11y-$theme.json" \
-                "http://localhost:8000/index.html#/$s"
+              npx -y pa11y@8 --config .github/pa11y.json \
+                "http://localhost:8000/index.html#/$s?tema=$theme"
             done
           done

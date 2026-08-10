@@ -5,6 +5,33 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto se adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-08-09
+
+### Añadido
+- **Identidad visual de 8 bits.** Doce iconos dibujados en rejilla de 8×8 píxeles
+  con `crispEdges`, bordes duros de 3 px sin redondear, sombras sólidas sin
+  desenfoque, transiciones por `steps()`, rejilla de fondo por CSS, líneas de
+  barrido CRT sobre el hero, brillo de acento en modo oscuro y cursor de terminal
+  parpadeante. La fuente de mapa de bits pasa a vestir marca, pestañas, títulos,
+  botones, cifras y cabeceras de tabla; la prosa sigue en Inter.
+- **Arte de cabecera** en pixel-art, teñido con la misma rampa que el heatmap.
+- **El tema viaja en el enlace** (`?tema=light|dark`), igual que el idioma.
+
+### Corregido
+- **CI nunca auditó el modo oscuro.** `--blink-settings=preferredColorScheme=2`
+  rinde el tema claro, así que la auditoría ejecutaba el mismo tema dos veces y
+  parecía verde. Ahora el tema se fija con el parámetro `?tema=` de la propia
+  aplicación, que es determinista en cualquier entorno.
+- **`--clr-warn` daba 4.49:1** contra el fondo de página en modo claro, por
+  debajo del mínimo AA. Mismo patrón que el fallo anterior de `--clr-subtle`:
+  medido contra la superficie de tarjeta pero no contra el fondo.
+- El conmutador de tema usaba los glifos `☀` y `☾`, que no existen en Press
+  Start 2P y el navegador sustituía por otra fuente. Sustituidos por iconos del
+  sprite, como ya se había hecho con la fórmula del Game Score.
+- Los botones de idioma y tema no tenían nombre accesible hasta que arrancaba el
+  JavaScript; ahora lo llevan en el HTML estático.
+- Eliminado el último estilo en línea del documento.
+
 ## [2.0.0] - 2026-08-09
 
 Reescritura completa. La guía pasa de describir el juego a **calcularlo**: los datos

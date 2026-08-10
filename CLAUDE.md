@@ -49,6 +49,8 @@ Orden de carga en `index.html`: `data → engine → i18n → ui → app`.
 - **Textos**: los datos guardan `id`; las etiquetas van en `GDT.i18n.DICT`, con las mismas claves en `es` y `en`. Añadir un idioma no puede tocar un número.
 - **Claves i18n**: ojo con el anidamiento. `t('genre.action')` funciona porque `genre` es un grupo raíz; `t('verdict.off')` **no**, porque esas claves viven bajo `ui`. Es `t('ui.verdict.off')`. Hay un test que lo comprueba.
 - **Colores**: no inventes hex. Si añades un color, mide su contraste. La paleta del heatmap sale del validador del skill `dataviz` y **no se ajusta a mano**: si falla, se cambia de rampa.
+- **Símbolos**: nunca un glifo Unicode junto a la fuente pixel. Press Start 2P no tiene `⊕`, `☀`, `☾` ni casi ningún símbolo, y el navegador los sustituye por otra fuente rompiendo la línea. Usa un icono del sprite de `index.html` (`<use href="#i-...">`), dibujado en rejilla de 8×8.
+- **Estética**: bordes duros de 3 px sin `border-radius`, sombras sólidas sin desenfoque y transiciones por `steps()`. La fuente pixel viste el armazón; la prosa va en Inter.
 - **Idioma**: el proyecto está en español. Comentarios y documentación en español.
 
 ## Comandos
@@ -57,16 +59,19 @@ Orden de carga en `index.html`: `data → engine → i18n → ui → app`.
 node tests/audit.js                    # datos, motor, i18n
 npx html-validate index.html           # marcado
 python3 -m http.server 8000            # servidor local
-npx pa11y@8 --standard WCAG2AA "http://localhost:8000/index.html#/matrix"
+npx pa11y@8 --config .github/pa11y.json "http://localhost:8000/index.html#/matrix?tema=dark"
 ```
 
-Al auditar accesibilidad, **recorre las ocho secciones** (`#/algorithm`, `#/progress`, `#/matrix`, `#/sliders`, `#/platforms`, `#/team`, `#/extras`, `#/sources`). Los paneles se renderizan al seleccionarlos, así que auditar solo la portada deja siete sin cubrir.
+Al auditar accesibilidad, recorre **las ocho secciones por cada uno de los dos temas**. Los paneles se renderizan al seleccionarlos, así que auditar solo la portada deja siete sin cubrir; y cada tema tiene su propio juego de tokens de color.
+
+Fija el tema con `?tema=light|dark`, **no** con `--blink-settings=preferredColorScheme`: esa bandera no da oscuro de forma fiable y su valor por defecto cambia según el entorno. Con ella, la auditoría llegó a probar el tema claro dos veces sin cubrir el oscuro.
 
 ## Cosas que no son bugs
 
 - **`action` y `simulation` dan veredicto «fuera de rango» con el preset óptimo.** Es correcto: las dos tablas de la guía se contradicen y el ratio exigido no es alcanzable solo con sliders. La app lo explica y `tests/audit.js` fija esas dos como expectativa. Ver [docs/hallazgos.md](docs/hallazgos.md).
 - **Las bandas de tiempo usan comparadores inclusivos.** Con lectura estricta, 8 de las 18 fases serían aritméticamente imposibles. `auditPlans()` lo prueba.
 - **El panel de Fuentes se renderiza aunque esté oculto.** Los chips de referencia apuntan a sus anclas, y un enlace a un ancla inexistente incumple WCAG 2.4.1.
+- **`--clr-warn` y `--clr-subtle` son más oscuros de lo que parece necesario en modo claro.** Están medidos contra `--clr-bg`, no solo contra `--clr-surface`: hay texto que se apoya en el fondo de página, y ahí los valores «bonitos» caen por debajo de 4.5:1.
 
 ## Documentación
 

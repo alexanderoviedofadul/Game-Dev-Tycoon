@@ -4,6 +4,36 @@
 
 **Todos los pares de color de este proyecto están medidos, no estimados.** Ningún hex se ajustó a ojo ni se retocó a mano para que «pasara».
 
+Y el corolario que gobierna el aspecto: **la identidad retro no se paga con accesibilidad.** El proyecto de referencia consiguió su estética arcade usando la fuente de mapa de bits a `0.38rem` (~6 px) y texto blanco sobre degradados brillantes a 2.43:1. Aquí la estética es igual de marcada sin ninguna de esas dos cosas.
+
+## Sistema visual de 8 bits
+
+| Elemento | Decisión |
+|---|---|
+| **Bordes** | `3px` sólidos, `border-radius: 0`. Sin esquinas redondeadas en ninguna parte |
+| **Sombras** | Sólidas y desplazadas (`4px 4px 0 0`), sin desenfoque — la sombra de un sprite, no la de un material |
+| **Transiciones** | `steps(3, end)`, no interpolación suave: el movimiento continuo delata que no es un juego de 8 bits |
+| **Fondo** | Rejilla de 16 px por gradientes CSS, en vez de un PNG en mosaico de 362 KB |
+| **Barrido CRT** | `repeating-linear-gradient` **solo sobre el hero**. Superponerlo al texto de lectura degradaría el contraste medido |
+| **Brillo** | `drop-shadow` de acento en iconos y marca, solo en modo oscuro (`--glow` es transparente en claro) |
+| **Cursor** | Guion bajo parpadeante en el pie, con `steps(2, end)` |
+
+Todas las animaciones se anulan bajo `prefers-reduced-motion`.
+
+### Tipografía
+
+Press Start 2P tiene la altura de mayúscula igual al tamaño de fuente, así que rinde visualmente más grande que una fuente normal del mismo tamaño. Aun así, el mínimo aquí es `0.5rem` (8 px) y solo para etiquetas cortas en mayúsculas; los tamaños de lectura no bajan de `0.6rem`.
+
+El reparto es deliberado: **la fuente pixel viste el armazón** (marca, pestañas, títulos de sección, botones, cifras clave, etiquetas de tabla) y **Inter lleva la prosa**. Un párrafo de cinco líneas en Press Start 2P es ilegible por mucho que sea auténtico.
+
+### Iconos
+
+Doce iconos dibujados sobre rejilla de 8×8 píxeles, con `shape-rendering="crispEdges"` para que el antialiasing no redondee el píxel.
+
+Van **en línea** en el documento, no en un `.svg` externo: `<use href="sprite.svg#id">` falla entre documentos bajo `file://`, que es el caso que este proyecto debe soportar.
+
+> **No uses glifos Unicode con la fuente pixel.** Press Start 2P no tiene `⊕`, `☀`, `☾` ni la mayoría de símbolos: el navegador los sustituye por otra fuente y rompe la línea. Pasó dos veces —en la fórmula del Game Score y en el conmutador de tema— y por eso todo símbolo es ahora un icono del sprite.
+
 ## Sistema de tokens
 
 Estructura de tres capas en `styles.css`:

@@ -53,9 +53,21 @@
     return wrap;
   }
 
-  function sectionHeading(key, icon) {
+  /** Icono de pixel-art del sprite en línea. Decorativo: nunca lleva texto. */
+  function icon(name, cls) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'icon' + (cls ? ' ' + cls : ''));
+    svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('focusable', 'false');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', '#i-' + name);
+    svg.appendChild(use);
+    return svg;
+  }
+
+  function sectionHeading(key, iconName) {
     return el('h2', { class: 'section-title' }, [
-      el('span', { class: 'section-icon', 'aria-hidden': 'true', text: icon }),
+      icon(iconName, 'icon--lg'),
       el('span', { text: t(key) })
     ]);
   }
@@ -64,7 +76,7 @@
 
   function renderAlgorithm(root) {
     clear(root);
-    root.appendChild(sectionHeading('ui.algorithm.title', '∑'));
+    root.appendChild(sectionHeading('ui.algorithm.title', 'chip'));
 
     // La fórmula, tal y como la publica la wiki.
     root.appendChild(el('div', { class: 'card card--formula' }, [
@@ -111,7 +123,7 @@
         el('th', { scope: 'row' }, [document.createTextNode(t('penalty.' + p.id)), refs(p.src)]),
         el('td', { text: t('penaltyBody.' + p.id) }),
         el('td', {}, [el('span', { class: 'sev sev--' + p.severity }, [
-          el('span', { 'aria-hidden': 'true', text: p.severity === 'critical' ? '⛔' : p.severity === 'high' ? '⚠' : '•' }),
+          icon(p.severity === 'critical' ? 'block' : p.severity === 'high' ? 'warn' : 'chip'),
           document.createTextNode(' ' + t('ui.severity.' + p.severity))
         ])])
       ])))
@@ -136,7 +148,7 @@
 
   function renderProgress(root, state, onToggle) {
     clear(root);
-    root.appendChild(sectionHeading('ui.progress.title', '⌁'));
+    root.appendChild(sectionHeading('ui.progress.title', 'steps'));
 
     const done = state.milestonesDone || {};
     const total = D.milestones.length;
@@ -183,7 +195,7 @@
 
   function renderMatrix(root, state, onToggleColor) {
     clear(root);
-    root.appendChild(sectionHeading('ui.matrix.title', '▦'));
+    root.appendChild(sectionHeading('ui.matrix.title', 'grid'));
     root.appendChild(el('p', { class: 'muted', text: t('ui.matrix.caption') }));
 
     // Leyenda: obligatoria, y cada peldaño filtra el resto (KPI clicable accesible).
@@ -260,7 +272,7 @@
 
   function renderSliders(root, state, onChange) {
     clear(root);
-    root.appendChild(sectionHeading('ui.sliders.title', '⇄'));
+    root.appendChild(sectionHeading('ui.sliders.title', 'sliders'));
 
     const genreSel = el('select', { id: 'slider-genre', class: 'form-select' },
       D.genres.map(g => el('option', { value: g.id, text: t('genre.' + g.id) })));
@@ -405,7 +417,7 @@
 
   function renderPlatforms(root, state, onFilter) {
     clear(root);
-    root.appendChild(sectionHeading('ui.platforms.title', '▤'));
+    root.appendChild(sectionHeading('ui.platforms.title', 'monitor'));
 
     const filters = el('div', { class: 'toolbar', role: 'group', 'aria-label': t('ui.platforms.title') });
     [['ALL', 'ui.platforms.all'], ['ETERNAL', 'ui.platforms.eternal'], ['CUSTOM', 'ui.platforms.custom']]
@@ -462,7 +474,7 @@
 
   function renderTeam(root) {
     clear(root);
-    root.appendChild(sectionHeading('ui.team.title', '👥'));
+    root.appendChild(sectionHeading('ui.team.title', 'team'));
 
     root.appendChild(el('h3', { class: 'card-title', text: t('ui.team.recruiting') }));
     root.appendChild(el('p', { class: 'muted', text: t('ui.team.recruitingNote') }));
@@ -513,7 +525,7 @@
 
   function renderExtras(root) {
     clear(root);
-    root.appendChild(sectionHeading('ui.extras.title', '☠'));
+    root.appendChild(sectionHeading('ui.extras.title', 'star'));
 
     const p = D.pirateMode;
     root.appendChild(el('div', { class: 'card' }, [
@@ -561,7 +573,7 @@
 
   function renderSources(root) {
     clear(root);
-    root.appendChild(sectionHeading('ui.sources.title', '❖'));
+    root.appendChild(sectionHeading('ui.sources.title', 'book'));
     root.appendChild(el('p', { class: 'muted', text: t('ui.sources.note') }));
 
     root.appendChild(el('ol', { class: 'source-list' }, Object.entries(D.sources).map(([key, s]) =>
@@ -573,7 +585,7 @@
   }
 
   global.GDT.ui = {
-    el, clear, refs,
+    el, clear, refs, icon,
     renderAlgorithm, renderProgress, renderMatrix, renderSliders,
     renderPlatforms, renderTeam, renderExtras, renderSources
   };

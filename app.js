@@ -74,8 +74,11 @@
         ? state.theme === 'dark'
         : window.matchMedia('(prefers-color-scheme: dark)').matches;
       btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
-      btn.textContent = dark ? '☀' : '☾';
       btn.setAttribute('aria-label', GDT.i18n.t('ui.theme.toggle'));
+      // Icono de pixel-art, no un glifo: Press Start 2P no tiene ni sol ni luna
+      // y el navegador los sustituiría por otra fuente.
+      const use = btn.querySelector('use');
+      if (use) use.setAttribute('href', dark ? '#i-sun' : '#i-moon');
     }
   }
 
@@ -93,6 +96,7 @@
     // El idioma viaja en el enlace: un enlace compartido llega en el idioma
     // en que se compartió, sin depender del localStorage de quien lo abre.
     if (state.lang !== 'es') params.set('lang', state.lang);
+    if (state.theme) params.set('tema', state.theme);
     if (state.section === 'sliders') params.set('genero', state.genre);
     if (state.section === 'platforms' && state.platformFilter !== 'ALL') params.set('filtro', state.platformFilter);
     const qs = params.toString();
@@ -107,6 +111,12 @@
     if (section) state.section = section;
     if (params.has('lang') && GDT.i18n.available.includes(params.get('lang'))) {
       state.lang = params.get('lang');
+    }
+    // El tema también viaja en el enlace. Además de ser compartible, hace que
+    // las pruebas puedan fijarlo de forma determinista: la preferencia del
+    // navegador depende del entorno y no es fiable para automatizar.
+    if (params.has('tema') && ['light', 'dark'].includes(params.get('tema'))) {
+      state.theme = params.get('tema');
     }
     if (params.has('genero') && GDT.genres.some(g => g.id === params.get('genero'))) {
       state.genre = params.get('genero');
