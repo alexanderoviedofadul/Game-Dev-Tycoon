@@ -27,15 +27,23 @@ jobs:
           python3 -m http.server 8000 &
           npx -y wait-on http://localhost:8000/index.html
 
-      # Cada sección se audita por separado: los paneles se renderizan al
-      # seleccionarlos, así que auditar solo la portada dejaría siete sin cubrir.
+      # Ocho secciones × dos temas.
       #
-      # La configuración pasa --no-sandbox al Chromium de pa11y: los runners de
-      # GitHub no tienen sandbox de usuario y el navegador no arranca sin ello.
+      # Por sección, porque los paneles se renderizan al seleccionarlos: auditar
+      # solo la portada dejaría siete sin cubrir.
+      #
+      # Por tema, porque cada uno tiene su propio juego de tokens de color. Un
+      # fallo de contraste solo del modo claro pasó desapercibido auditando en un
+      # navegador que estaba en modo oscuro.
+      #
+      # La configuración pasa además --no-sandbox: los runners de GitHub no
+      # tienen sandbox de usuario y el Chromium de pa11y no arranca sin ello.
       - name: Accesibilidad (WCAG 2.1 AA)
         run: |
-          for s in algorithm progress matrix sliders platforms team extras sources; do
-            echo "── $s"
-            npx -y pa11y@8 --config .github/pa11y.json \
-              "http://localhost:8000/index.html#/$s"
+          for theme in light dark; do
+            for s in algorithm progress matrix sliders platforms team extras sources; do
+              echo "── $theme / $s"
+              npx -y pa11y@8 --config ".github/pa11y-$theme.json" \
+                "http://localhost:8000/index.html#/$s"
+            done
           done

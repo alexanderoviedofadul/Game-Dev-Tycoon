@@ -9,16 +9,25 @@ node tests/audit.js
 # 2. Marcado
 npx html-validate index.html
 
-# 3. Accesibilidad, sección por sección
+# 3. Accesibilidad: ocho secciones × dos temas
 python3 -m http.server 8000 &
-for s in algorithm progress matrix sliders platforms team extras sources; do
-  npx pa11y@8 --standard WCAG2AA "http://localhost:8000/index.html#/$s"
+for theme in light dark; do
+  for s in algorithm progress matrix sliders platforms team extras sources; do
+    npx pa11y@8 --config ".github/pa11y-$theme.json" \
+      "http://localhost:8000/index.html#/$s"
+  done
 done
 ```
 
 `.github/workflows/ci.yml` ejecuta las tres en cada push y pull request.
 
-> **Auditar solo la portada no sirve.** Los paneles se renderizan al seleccionarlos, así que una auditoría de `index.html` a secas deja siete secciones sin cubrir. De ahí el bucle.
+> **Auditar solo la portada no sirve.** Los paneles se renderizan al seleccionarlos, así que una auditoría de `index.html` a secas deja siete secciones sin cubrir.
+>
+> **Auditar un solo tema tampoco.** Cada tema tiene su propio juego de tokens. Un fallo de contraste que solo afectaba al modo claro pasó desapercibido porque el navegador que ejecutaba las pruebas estaba en modo oscuro; lo detectó CI, donde el runner arranca en claro. De ahí que los ficheros `.github/pa11y-{light,dark}.json` fijen el esquema de color explícitamente en lugar de heredar el del sistema.
+
+### La trampa de los dos fondos
+
+El bug concreto: `--clr-subtle` medía 4.55:1 contra `--clr-surface`, pero los chips de referencia se apoyan en `--clr-bg`, que es más oscuro — ahí daba **4.08:1**. Al añadir o cambiar un token de texto hay que medirlo contra **ambos** fondos, no solo contra la superficie de tarjeta.
 
 ## Qué comprueba `tests/audit.js`
 

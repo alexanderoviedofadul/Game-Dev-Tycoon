@@ -72,14 +72,20 @@ Dos fallos heredados del CSS anterior, ambos medidos:
 
 El primero era el más grave: es el elemento de navegación principal.
 
-Tokens verificados en ambos modos:
+### Medir contra los dos fondos
 
-| Token | Claro | Oscuro |
+Hay dos superficies en juego: `--clr-surface` (tarjetas y tablas) y `--clr-bg` (el fondo de página), que es más oscuro. Parte del texto se apoya directamente en el segundo.
+
+Un token que solo se mide contra la superficie falla en cuanto sale de una tarjeta. Ocurrió: `--clr-subtle: #64748b` daba 4.55:1 contra la superficie —correcto— pero **4.08:1** contra el fondo, donde viven los chips de referencia. Corregido a `#5a6b80`.
+
+Tokens verificados contra **ambos** fondos:
+
+| Token | Claro (superficie / fondo) | Oscuro (superficie / fondo) |
 |---|---|---|
-| texto | 17.89:1 | 17.06:1 |
-| muted | 7.24:1 | 6.96:1 |
-| subtle | 4.55:1 | 6.65:1 |
-| acento | `#0e7490` 5.12:1 | `#06b6d4` 7.35:1 |
+| texto | 17.89:1 / 17.05:1 | 17.06:1 / 18.4:1 |
+| muted | 7.24:1 / 6.92:1 | 6.96:1 / 7.53:1 |
+| subtle | `#5a6b80` 5.21:1 / 4.98:1 | `#8ba0b8` 6.65:1 / 7.19:1 |
+| acento | `#0e7490` 5.12:1 / 4.89:1 | `#06b6d4` 7.35:1 / 7.95:1 |
 
 El cian de marca `#06b6d4` da 2.32:1 sobre fondo claro, así que el modo claro usa `#0e7490`.
 

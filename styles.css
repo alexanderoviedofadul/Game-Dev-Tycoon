@@ -15,9 +15,12 @@
   --clr-surface3:  #dfe6ee;
   --clr-border:    #cbd5e1;
 
-  --clr-text:      #0b1220;   /* 17.89:1 */
-  --clr-muted:     #475569;   /*  7.24:1 */
-  --clr-subtle:    #64748b;   /*  4.55:1 */
+  /* Contrastes medidos contra la superficie Y contra el fondo de página, que es
+     más oscuro: hay texto que se apoya directamente en el fondo. Un token que
+     solo pasa contra la superficie falla en cuanto sale de una tarjeta. */
+  --clr-text:      #0b1220;   /* 17.89:1 sup · 17.05:1 fondo */
+  --clr-muted:     #475569;   /*  7.24:1 sup ·  6.92:1 fondo */
+  --clr-subtle:    #5a6b80;   /*  5.21:1 sup ·  4.98:1 fondo */
 
   --clr-accent:    #0e7490;   /*  5.12:1 — el cian de marca no llega en claro */
   --clr-accent-ink:#ffffff;
